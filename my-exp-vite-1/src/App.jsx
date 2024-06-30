@@ -12,10 +12,13 @@ function App() {
 
   const [password, setPassword]=useState("");
   
+  const [copy, setCopy]=useState("Copy");
+
   const passRef=useRef(null);
   const CopyToClipboard=()=>{
     passRef.current?.select()
     // passRef.current?.setSelectionRange(0,Math.min(length,20));
+    setCopy((prev)=>"✔ copied");
     window.navigator.clipboard.writeText(password);
   }
   const passwordGenerator=useCallback(()=>{
@@ -34,12 +37,13 @@ function App() {
   },[length,numberAllowed,charAllowed,setPassword])
 
   useEffect(()=>{
+    setCopy((prev)=>"Copy")
     passwordGenerator()
   },[length,numberAllowed,charAllowed,setlength,passwordGenerator])
 
   return (
-    <>
-     <div className='w-full shadow-md 
+    <div className='ml-20 mb-96'>
+     <div className='shadow-md ml-96
      rounded-lg px-8 py-8 bg-gray-800 text-orange-500 justify-center'>
         <h1 className='text-white text-center'>Password Generator</h1>
         <div className='flex shadow rounded-lg
@@ -55,7 +59,7 @@ function App() {
             <button onClick={CopyToClipboard}
             className='outline-none bg-blue-400 text-white mt-6 py-1
              px-3 shrink-0'>
-             copy
+             {copy}
             </button>
         </div>
         <div className='flex text-5m gap-x-5'>
@@ -94,7 +98,7 @@ function App() {
           </div>
         </div>
      </div>
-    </>
+    </div>
   );
 }
 
