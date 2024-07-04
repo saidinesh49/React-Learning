@@ -2,15 +2,13 @@ import { useState, useEffect } from 'react'
 
 function useCurrencyInfo(currency){
   const [data, setData]=useState({});
-  let tpcurrency="";
-  tpcurrency=currency.toUpperCase();
   useEffect(()=>{
-  fetch(`https://api.exchangerate-api.com/v4/latest/${tpcurrency}`)
-  .then((res)=>{res})
-  .then(setData(res[6]))
+  fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`)
+  .then((res)=>res.json())
+  .then((res)=>setData(res.rates))
   .catch((e)=>{console.log(e)})
   },[currency])
-  console.log(data);
+  console.log("This is data: ",data);
   return data;
 }
 
