@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import './index.css';
 import { InputBox } from '../components/Index';
 import useCurrencyInfo from '../Hooks/useCurrencyInfo';
 
@@ -28,47 +29,52 @@ function App() {
   };
 
   return (
-    <>
+    <div className="flex items-center justify-center min-h-screen bg-gray-300">
       <div
-        className='w-full justify-center flex flex-wrap items-center bg-cover bg-no-repeat'
+        className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full bg-cover bg-center"
         style={{
           backgroundImage: `url('https://tse3.mm.bing.net/th?id=OIP.gOC5rnSgGtqWkCw1Ugr-GgHaFc&pid=Api&P=0&h=180')`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
         }}
       >
-        <InputBox
-          label={"From"}
-          amount={amount}
-          currencyOptions={options}
-          onCurrencyChange={(currency) => {
-            setFrom(currency);
-          }}
-          onAmountChange={(amount) => {
-            setAmount(amount);
-          }}
-          selectCurrency={from}
-        />
-      </div>
-      <div className='relative w-full h-0.5'>
-        <button type='button' className='outline-none bg-blue-400 p-1' onClick={swap}>
-          Swap
+        <div className="flex flex-col font-semibold p-4 rounded-lg bg-white bg-opacity-80">
+          <InputBox
+            label={"From"}
+            amount={amount}
+            currencyOptions={options}
+            onCurrencyChange={(currency) => {
+              setFrom(currency);
+            }}
+            onAmountChange={(amount) => {
+              if (amount < 0) return;
+              setAmount(amount);
+            }}
+            selectCurrency={from}
+          />
+        </div>
+        <div className="relative mt-4 flex justify-center">
+          <button className="bg-violet-600 py-2 px-4 text-white font-bold rounded-md hover:bg-violet-800" onClick={swap}>
+            Swap
+          </button>
+        </div>
+        <div className="flex flex-col font-semibold p-4 rounded-lg bg-white bg-opacity-80 mt-4">
+          <InputBox
+            label={"To"}
+            amount={convertedAmount}
+            currencyOptions={options}
+            onCurrencyChange={(currency) => {
+              setTo(currency);
+            }}
+            selectCurrency={to}
+            amountDisabled
+          />
+        </div>
+        <button onClick={convert} className="w-full mt-4 bg-indigo-600 transition-colors text-white py-2 rounded hover:bg-indigo-800">
+          Convert {from.toUpperCase()} to {to.toUpperCase()}
         </button>
       </div>
-      <div>
-        <InputBox
-          label={"To"}
-          amount={convertedAmount}
-          currencyOptions={options}
-          onCurrencyChange={(currency) => {
-            setTo(currency);
-          }}
-          selectCurrency={to}
-          amountDisabled
-        />
-      </div>
-      <button type='submit' onClick={convert}>
-        Convert {from.toUpperCase()} to {to.toUpperCase()}
-      </button>
-    </>
+    </div>
   );
 }
 
