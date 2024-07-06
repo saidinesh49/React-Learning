@@ -1,5 +1,5 @@
 import React, { useId } from 'react';
-
+import '../src/index.css'
 function InputBox({
   label,
   amount,
