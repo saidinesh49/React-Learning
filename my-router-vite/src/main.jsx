@@ -8,6 +8,7 @@ import Profile from './components/Profile/Profile.jsx'
 import Chess from './components/Chess/Chess.jsx'
 import Home from './components/Home/Home.jsx'
 import Users, { chessPlayerInfo } from './components/Users/Users.jsx'
+import NotFound from './components/NotFound.jsx'
 
 
 const router=createBrowserRouter(
@@ -21,6 +22,7 @@ const router=createBrowserRouter(
        path="view/:userid" 
        element={<Users/>} 
        />
+       <Route path='*' element={<NotFound/>} />
     </Route>
   )
 )

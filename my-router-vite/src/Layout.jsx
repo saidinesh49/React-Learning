@@ -5,11 +5,11 @@ import Footer from './components/Footer/Footer'
 
 function Layout() {
   return (
-    <>
+    <div className='flex flex-col h-full'>
       <Header/>
       <Outlet/>
       <Footer/>
-    </>
+    </div>
   )
 }
 

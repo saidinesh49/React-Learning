@@ -1,0 +1,6 @@
+@import '../index.css';
+::-webkit-scrollbar {
+    width: 0;
+    background-color: fuchsia;
+    scroll-behavior: smooth;
+  }
