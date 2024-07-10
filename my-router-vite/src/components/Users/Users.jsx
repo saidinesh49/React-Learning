@@ -17,7 +17,7 @@ function Users() {
   if(error){return <NotFound/>;}
 
   return (
-    <div className='bg-zinc-900 text-white'
+    <div className='bg-zinc-900 text-white mt-16'
      style={{minHeight:'calc(100vh - 8rem)'}} 
      >
       <div>
