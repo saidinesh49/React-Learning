@@ -2,7 +2,13 @@ import { createContext, useContext } from "react";
 
 
 const TodoContext=createContext({
-    Todolist:[],
+    Todolist:[
+        {
+         index:1,
+         work:"some work",
+         done:false
+        }
+    ],
     setTodolist:()=>{},
 })
 
