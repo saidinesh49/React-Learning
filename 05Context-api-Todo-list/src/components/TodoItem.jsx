@@ -13,6 +13,7 @@ function TodoItem({todo,removeitem}) {
       const readval = ref.current.hasAttribute("readonly");
       if(!readval){
         ref.current.setAttribute("readonly", true);
+        ref.current.blur();
       }
       }
     };
@@ -42,10 +43,11 @@ function TodoItem({todo,removeitem}) {
       console.log("realval is: ", readval);
       if (readval) {
         ref.current.removeAttribute("readonly");
+        ref.current.focus();
       } else {
         ref.current.setAttribute("readonly", true);
+        ref.current.blur();
       }
-      ref.current.focus();
     }
   }
   
