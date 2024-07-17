@@ -31,7 +31,9 @@ function Todoitem() {
 
     return (
         <>
-            {todos.map((todo) => (
+            {todos.map((todo) => {
+               if(todo.text=='') return;
+               return (
                 <div key={todo.id} className='flex flex-row bg-yellow-400 pl-2 rounded' style={{ background: todo.completed ? "green" : ""}}>
                     <input 
                         type='checkbox' 
@@ -50,7 +52,7 @@ function Todoitem() {
                     <button onClick={() => handleInputBox(todo.id)} className='bg-violet-600 px-2 text-yellow-300'>Edit</button>
                     <button onClick={() => dispatch(removetodo(todo.id))} className='bg-red-700 px-2 text-white'>Delete</button>
                 </div>
-            ))}
+            )})}
         </>
     );
 }
