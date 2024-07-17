@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useDispatch} from 'react-redux'
 import './App.css'
 import { addtodo } from './features/todo/todoSlice'
@@ -7,6 +7,19 @@ import Todoitem from './components/Todoitem'
 function App() {
   const [work,setwork]=useState('')
   const dispatch=useDispatch()
+
+  useEffect(()=>{
+    const handleEnterEvent=(event)=>{
+      if(event.key==='Enter' && work.trim()!=='')
+      {handleAddtodo();}
+      };
+    
+    document.addEventListener("keyup",handleEnterEvent);
+    return ()=>{
+        document.removeEventListener("keyup",handleEnterEvent);
+      };
+  },[work])
+
   const handleAddtodo=()=>{
     dispatch(addtodo(work))
     setwork('')
