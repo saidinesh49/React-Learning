@@ -102,7 +102,6 @@ export class Service{
                 ID.unique(),
                 file
             );
-            return true
         }
         catch(error){
             console.log("Appwrite service::while uploading::",error);
