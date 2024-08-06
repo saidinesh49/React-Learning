@@ -4,7 +4,7 @@ import '../styling.css';
 
 function Profile() {
   const [isOnline,setOnline]=useState(true)
-  const [items, setItems] = useState(Array.from({ length: 0}));
+  const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true); // To check if there are more items to load
   const observer = useRef();
@@ -88,13 +88,18 @@ function Profile() {
       {(isLoading || !isOnline) && (  <ContentLoader 
     speed={2}
     width={400}
-    height={460}
+    height={500}
     viewBox="0 0 400 460"
     backgroundColor="#919191"
     foregroundColor="#c9c5c5"
     className='mb-8 rounded'
   >
-    <rect x="20" y="60" rx="2" ry="2" width="400" height="400" />
+    <rect x="10" y="10" rx="10" ry="10" width="380" height="200" fill="#e0e0e0" />
+    {/* Small Boxes Below Big Box */}
+    <rect x="20" y="230" rx="4" ry="4" width="120" height="20" />
+    <rect x="150" y="230" rx="4" ry="4" width="120" height="20" />
+    <rect x="20" y="260" rx="4" ry="4" width="80" height="20" />
+    <rect x="110" y="260" rx="4" ry="4" width="120" height="20" />
 
   </ContentLoader>
 )}
