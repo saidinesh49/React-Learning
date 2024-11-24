@@ -1,6 +1,32 @@
 import axios from "axios";
 import conf from "../conf/conf";
 
+
+const setCookie = (name, value, options = {}) => {
+  let cookieString = `${name}=${value}; path=/`;
+  // Add secure flag (only for HTTPS connections)
+  if (options?.secure) {
+    cookieString += "; secure";
+  }
+
+  // Add SameSite attribute (Strict or Lax, default to Strict)
+  cookieString += `; sameSite=${options.sameSite || 'Strict'}`;
+
+  // Set max-age (time in seconds until the cookie expires)
+  if (options?.maxAge) {
+    cookieString += `; max-age=${options.maxAge}`;
+  }
+
+  // Set expiration date if provided
+  if (options?.expires) {
+    cookieString += `; expires=${options.expires.toUTCString()}`;
+  }
+
+  // Set the cookie
+  document.cookie = cookieString;
+};
+
+
 // Helper to get cookies
 const getCookie = (name) => {
   const cookies = document.cookie.split("; ");
@@ -25,7 +51,11 @@ const loginUser = async (username, password, addUserData) => {
     }
 
     // Store token securely
-    document.cookie = `accessToken=${Data?.accessToken}; path=/; secure; sameSite=Strict; max-age=3600`;
+    setCookie('accessToken',`${Data?.accessToken}`, {
+      secure: true,
+      sameSite: 'Strict',
+      maxAge: 3600,
+    });
 
     addUserData(Data.user);
     return Data.user;
@@ -38,13 +68,18 @@ const loginUser = async (username, password, addUserData) => {
 const logoutUser = async (removeUserData) => {
   try {
     const accessToken = getCookie("accessToken");
-    const Data=await axios.post(`${conf.BACKEND_URL}/users/logout`,{ 
+    if(!accessToken){
+      console.log("No access token found by logout!");
+      return null;
+    }
+    console.log("Access token sending by logout: " + accessToken)
+    const Data=await axios.post(`${conf.BACKEND_URL}/users/logout`,{},{ 
       headers: { Authorization: `Bearer ${accessToken}` },
       withCredentials: true,
      });
     document.cookie = "accessToken=; path=/; max-age=0; secure; sameSite=Strict"; // Clear cookie
     removeUserData();
-    console.log("User logged out successfully");
+    console.log("User logged out successfully",Data);
   } catch (error) {
     console.error("Error while logging out:", error);
   }
@@ -58,7 +93,7 @@ const getCurrentUser = async (addUserData) => {
       return null;
     }
 
-    console.log("Access Token sending is:", accessToken);
+    console.log("Access Token sending by current-User is:", accessToken);
 
     const response = await axios.get(`${conf.BACKEND_URL}/users/current-user`, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -107,8 +142,10 @@ const registerUser = async (fullName, username, password, email, avatar, coverIm
           return null;
         }
     
-        console.log(Data);
-        // addUserData(Data?.user);
+        console.log('Details after signup: ',Data);
+        const lg_data = await loginUser(username, password, addUserData);
+        return lg_data;
+
     } catch (error) {
       console.log("Error while adding user",error);
       return null;
@@ -116,6 +153,7 @@ const registerUser = async (fullName, username, password, email, avatar, coverIm
 };
 
 export { 
+  setCookie,
   getCookie,
   loginUser,
   logoutUser, 

@@ -41,7 +41,7 @@ export function SignupForm() {
     if (response?.username) {
       navigate("/");
     } else {
-      setError("Invalid login credentials. Please try again.");
+      setError("Please fill details properly and try again.");
     }
   
     setIsSubmitting(false);
@@ -152,6 +152,11 @@ export function SignupForm() {
           disabled={isSubmitting}>
           {isSubmitting ? "Signing up..." : "SignUp"}
         </button>
+        <div className="my-4-">
+        <a href='/login' 
+        className="underline text-md font-semibold decoration-auto decoration-sky-800 hover:decoration-2 hover:decoration-sky-300">
+        Already have an account?</a>
+        </div>
         </form>
       </div>
     </div>

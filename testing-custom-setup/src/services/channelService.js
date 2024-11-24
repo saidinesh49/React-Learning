@@ -51,7 +51,7 @@ const toggleChannelSubscription=async(channelId)=>{
             return null;
         }
         const accessToken=getCookie('accessToken');
-        const Data=await axios.post(`${conf.BACKEND_URL}/subscriptions/c/${channelId}`,{
+        const Data=await axios.post(`${conf.BACKEND_URL}/subscriptions/c/${channelId}`,{},{
             headers: { Authorization: `Bearer ${accessToken}` },
             withCredentials: true,
         });

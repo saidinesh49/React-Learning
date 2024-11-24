@@ -71,7 +71,11 @@ export function LoginForm() {
           disabled={isSubmitting}>
           {isSubmitting ? "Logging in..." : "Login"}
         </button>
-
+        <div className="my-4">
+        <a href='/register' 
+        className="underline text-md font-semibold decoration-auto decoration-sky-800 hover:decoration-2 hover:decoration-sky-300">
+        Don't have an account?</a>
+        </div>
         </form>
       </div>
     </div>

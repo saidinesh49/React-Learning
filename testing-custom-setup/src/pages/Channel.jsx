@@ -28,7 +28,7 @@ export function Channel() {
 
     const toggleChannelSubcription=async()=>{
         try {
-            const Data=await toggleChannelSubscription(channelData?._id);
+            const Data=await toggleChannelSubscription(username);
             if(!Data){
                 setError('An error occurred while toggling channel subscription');
             }
@@ -62,7 +62,7 @@ export function Channel() {
                      userData?.username!=channelData?.username && 
                     <button 
                     onClick={toggleChannelSubcription} 
-                    className={`flex justify-center rounded max-w-40 px-4  py-3 ${(channelData?.isSubscribed === 1) ? "text-slate-950 bg-slate-300 dark:bg-slate-950 dark:text-slate-300" : "text-slate-950 bg-sky-500"}`}>
+                    className={`flex justify-center rounded max-w-40 px-4  py-3 ${(channelData?.isSubscribed === 1) ? "text-slate-300 bg-slate-950 border border-white dark:bg-slate-950 dark:text-slate-300" : "text-slate-950 bg-sky-500"}`}>
                         {userData && userData.username ? (channelData?.isSubscribed === 1 ? "Subscribed" : "Subscribe Now") : "Please Log in to Subscribe"}
                     </button>
                     }
