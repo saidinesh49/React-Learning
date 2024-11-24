@@ -9,7 +9,7 @@ export function UserContextProvider({children}){
         setUserData(null);
     }
 
-    const addUserData=({fullName,username,...props})=>{
+    const addUserData=({fullName="",username="",...props})=>{
         try {
             if(!fullName || !username){
                 console.log("fullName and username is needed");

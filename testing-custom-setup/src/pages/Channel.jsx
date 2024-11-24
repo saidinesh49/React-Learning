@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageNotFound } from '../utils/PageNotFound';
 import { useUserContext } from '../context/UserContext';
-import { getChannelInfo } from '../services/channelService';
+import { getChannelInfo, toggleChannelSubscription } from '../services/channelService';
 
 export function Channel() {
     const { username } = useParams();
@@ -26,6 +26,17 @@ export function Channel() {
         }
     };
 
+    const toggleChannelSubcription=async()=>{
+        try {
+            const Data=await toggleChannelSubscription(channelData?._id);
+            if(!Data){
+                setError('An error occurred while toggling channel subscription');
+            }
+        } catch (error) {
+            console.log("Error at frontend page",error);
+        }
+    };
+
     useEffect(() => {
         userProfileDetails();
     }, [username]);
@@ -35,6 +46,7 @@ export function Channel() {
             {error && <div className="error-message">{error}</div>}
             {!channelData || !channelData.username ? <PageNotFound type='Channel' /> : (
                 <div className="flex flex-col gap-3">
+
                     <h1>getChannel Response is: {JSON.stringify(channelData)}</h1>  {/* for debugging purpose */}
                     <div className="flex flex-row gap-2 hover:text-rose-500">
                         <img 
@@ -46,9 +58,14 @@ export function Channel() {
                         <h3>@{channelData.username}</h3>
                     </div>
                     <h2>Subscribers: {channelData.subscribersCount}</h2>
-                    <h2 className={`${(channelData?.isSubscribed === 1) ? "text-slate-950 bg-slate-300 dark:bg-slate-950 dark:text-slate-300" : "text-slate-950 bg-sky-500"}`}>
+                    {
+                     userData?.username!=channelData?.username && 
+                    <button 
+                    onClick={toggleChannelSubcription} 
+                    className={`flex justify-center rounded max-w-40 px-4  py-3 ${(channelData?.isSubscribed === 1) ? "text-slate-950 bg-slate-300 dark:bg-slate-950 dark:text-slate-300" : "text-slate-950 bg-sky-500"}`}>
                         {userData && userData.username ? (channelData?.isSubscribed === 1 ? "Subscribed" : "Subscribe Now") : "Please Log in to Subscribe"}
-                    </h2>
+                    </button>
+                    }
                 </div>
             )}
         </>

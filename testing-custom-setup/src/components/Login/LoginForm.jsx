@@ -10,20 +10,24 @@ export function LoginForm() {
   const navigate = useNavigate();
   const { addUserData } = useUserContext(); // Get addUserData from context
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Details received:", username, " ", password);
-    
-    // Pass addUserData function to loginUser
+    setIsSubmitting(true);
+    setError(null);
+  
     const response = await loginUser(username, password, addUserData);
-    console.log("Response received:", response);
-
+  
     if (response?.username) {
-      navigate("/"); // Navigate to homepage if successful
+      navigate("/");
     } else {
-      setError("Invalid username or password. Please try again.");
+      setError("Invalid login credentials. Please try again.");
     }
+  
+    setIsSubmitting(false);
   };
+  
 
   return (
     <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -58,11 +62,16 @@ export function LoginForm() {
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>} {/* Display error message */}
           <button
-            type="submit"
-            className="w-full py-2 px-4 mt-4 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Login
-          </button>
+          type="submit"
+          className={`w-full py-2 px-4 mt-4 font-semibold rounded-md shadow-md focus:outline-none focus:ring-2 ${
+            isSubmitting
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
+          disabled={isSubmitting}>
+          {isSubmitting ? "Logging in..." : "Login"}
+        </button>
+
         </form>
       </div>
     </div>

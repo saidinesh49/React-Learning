@@ -1,28 +1,10 @@
 import React, { useEffect, useState } from 'react';
-// import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-// import { ThemeProvider } from './context/ThemeContext';
-
-// // Pages
-// import Home from './pages/Home';
-// import Videos from './pages/Videos';
-// import Tweets from './pages/Tweets';
-// import { Channel } from './pages/Channel';
-// import { PageNotFound } from './utils/PageNotFound';
-// import { ComingSoon } from './utils/ComingSoon';
-// import Login from './pages/Login';
-// import { UserContextProvider } from './context/UserContext';
 import { getCurrentUser } from './services/authService';
 import { Outlet, useNavigate } from 'react-router-dom';
-import {BookLoader} from 'react-awesome-loaders';
 import { useUserContext } from './context/UserContext';
-// const paths=[
-//    "/settings", 
-//    "/achievements",
-//    "/favorites",
-//    "/following",
-// ];
+import Loading from './components/Loading';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -30,28 +12,24 @@ function App() {
   const {addUserData}=useUserContext();
   const navigate=useNavigate();
 
-  useEffect(()=>async ()=>{
-    setIsLoading(true);
-    await getCurrentUser(addUserData)
-      .then((res)=>{
-        if(!res?.username){
-          navigate('/login');
-        }
-      })
-      .catch((err)=>{
-        console.log("Error: ",err);
-      })
-      .finally(()=>{
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      setIsLoading(true);
+      try {
+        const res = await getCurrentUser(addUserData);
+      } catch (err) {
+        console.error("Error fetching current user:", err);
+      } finally {
         setIsLoading(false);
-      });
-  },[]);
+      }
+    };
+  
+    fetchCurrentUser();
+  }, []);
+  
 
   return isLoading?
-        <><BookLoader
-        background={"linear-gradient(135deg, #6066FA, #4645F6)"}
-        desktopSize={"100px"}
-        mobileSize={"80px"}
-        textColor={"#4645F6"}/>
+        <><Loading/>
         </>:(
         <div className="min-h-screen bg-surface-50 dark:bg-surface-900 transition-colors">
           <Sidebar isOpen={isSidebarOpen} />

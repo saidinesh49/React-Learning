@@ -13,6 +13,8 @@ import AllContextProvider from './context/AllContextProvider.jsx';
 import { UserContextProvider } from './context/UserContext.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import Home from './pages/Home.jsx';
+import AuthLayout from './components/AuthLayout.jsx';
+import SignUp from './pages/Signup.jsx';
 
 
 const router=createBrowserRouter([
@@ -26,7 +28,14 @@ const router=createBrowserRouter([
         },
         {
           path: '/login',
-          element: <Login/>
+          element: <AuthLayout>
+                      <Login/>
+                   </AuthLayout>
+        },
+
+        {
+          path: '/register',
+          element: <SignUp/>
         },
 
         {

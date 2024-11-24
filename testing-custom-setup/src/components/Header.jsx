@@ -14,11 +14,11 @@ export default function Header({ onMenuClick }) {
 
   const handleClickProfileIcon=()=>{
     try {
-      console.log("Icon clicked");
-      setIsProfileOpen(!isProfileOpen);
+      console.log("Icon clicked",userData);
       if(!userData?.username){
         navigate('/login');
       }
+      setIsProfileOpen(!isProfileOpen);
     } catch (error) {
       console.log("Error: inside handleProfileIcon",error);
     }
