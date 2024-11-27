@@ -54,7 +54,7 @@ const loginUser = async (username, password, addUserData) => {
     setCookie('accessToken',`${Data?.accessToken}`, {
       secure: true,
       sameSite: 'Strict',
-      maxAge: 3600,
+      maxAge: 60*60*24,
     });
 
     addUserData(Data.user);

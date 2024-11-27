@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageNotFound } from '../utils/PageNotFound';
 import { useUserContext } from '../context/UserContext';
+import Loading from '../components/Loading';
 import { getChannelInfo, toggleChannelSubscription } from '../services/channelService';
 
 export function Channel() {
@@ -9,9 +10,11 @@ export function Channel() {
     const [channelData, setChannelData] = useState(null);
     const { userData } = useUserContext();
     const navigate = useNavigate();
+    const [isloading, setLoading]=useState(true);
     const [error, setError] = useState(null);
 
-    const userProfileDetails = async () => {
+    const channelProfileDetails = async () => {
+        setLoading(true);
         try {
             const Data=await getChannelInfo(username);
             if (!Data?.data.username) {
@@ -24,24 +27,30 @@ export function Channel() {
             console.log("Error: while setting the channel data", error);
             setError('An error occurred while fetching channel data');
         }
+        setLoading(false);
     };
 
     const toggleChannelSubcription=async()=>{
         try {
-            const Data=await toggleChannelSubscription(username);
+            const Data=await toggleChannelSubscription(channelData?._id);
             if(!Data){
                 setError('An error occurred while toggling channel subscription');
             }
+            setChannelData((prev) => ({
+                ...prev,
+                isSubscribed:!prev.isSubscribed,
+                subscribersCount: prev.isSubscribed? prev.subscribersCount - 1 : prev.subscribersCount + 1,
+            }));            
         } catch (error) {
             console.log("Error at frontend page",error);
         }
     };
 
     useEffect(() => {
-        userProfileDetails();
+        channelProfileDetails();
     }, [username]);
 
-    return (
+    return isloading===true?<Loading />:(
         <>
             {error && <div className="error-message">{error}</div>}
             {!channelData || !channelData.username ? <PageNotFound type='Channel' /> : (
@@ -62,8 +71,19 @@ export function Channel() {
                      userData?.username!=channelData?.username && 
                     <button 
                     onClick={toggleChannelSubcription} 
-                    className={`flex justify-center rounded max-w-40 px-4  py-3 ${(channelData?.isSubscribed === 1) ? "text-slate-300 bg-slate-950 border border-white dark:bg-slate-950 dark:text-slate-300" : "text-slate-950 bg-sky-500"}`}>
-                        {userData && userData.username ? (channelData?.isSubscribed === 1 ? "Subscribed" : "Subscribe Now") : "Please Log in to Subscribe"}
+                    className={`
+                        flex justify-center items-center rounded-lg max-w-xs px-5 py-3 
+                        font-medium transition duration-300 ease-in-out
+                        ${(channelData?.isSubscribed === true) 
+                        ? "bg-gray-400 text-gray-700 hover:bg-gray-500"  // For unsubscribed (gray)
+                        : "bg-blue-500 text-white hover:bg-blue-600 active:bg-blue-700" // For subscribe (blue)
+                        }
+                    `}
+                    >
+                    {userData && userData.username 
+                        ? (channelData?.isSubscribed === true ? "Unsubscribe" : "Subscribe Now") 
+                        : "Please Log in to Subscribe"
+                    }
                     </button>
                     }
                 </div>

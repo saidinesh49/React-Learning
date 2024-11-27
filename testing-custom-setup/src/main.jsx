@@ -44,7 +44,7 @@ const router=createBrowserRouter([
         },
 
         {
-           path: '/tweets',
+           path: '/tweets/*',
            element: <Tweets/>,
         },
 
