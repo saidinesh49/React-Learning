@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { useUserContext } from "../../context/UserContext";
 import { registerUser } from "../../services/authService";
+import { toast } from 'react-toastify';
 
 export function SignupForm() {
   const [fullName, setfullName] = useState("");
@@ -22,13 +23,16 @@ export function SignupForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    if(password!=confirmPassword){
+    if(password !== confirmPassword) {
+      toast.error('Passwords do not match!', {
+      icon: '❌'
+      });
       setError("Password & Confirm do not match.");
       setIsSubmitting(false);
       return;
     }
     setError(null);
-  
+    
     const response = await registerUser(
       fullName,
       username, 
@@ -36,14 +40,21 @@ export function SignupForm() {
       email, 
       avatar, 
       coverImage, 
-      addUserData);// we also have to make like forwarding avatar (required surely).., coverImage if uploaded(optional)
-  
+      addUserData
+    );
+    
     if (response?.username) {
+      toast.success('Account created successfully! Welcome aboard!', {
+      icon: '🎉'
+      });
       navigate("/");
     } else {
+      toast.error('Failed to create account. Please check your details.', {
+      icon: '⚠️'
+      });
       setError("Please fill details properly and try again.");
     }
-  
+    
     setIsSubmitting(false);
   };
   
@@ -51,7 +62,6 @@ export function SignupForm() {
   return (
     <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
         <div>
             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 dark:text-gray-300">

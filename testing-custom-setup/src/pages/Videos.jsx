@@ -97,7 +97,7 @@ const videos = [
 
 export default function Videos() {
   return (
-    <>
+    <div className="pt-20 px-4">
       <h2 className="text-xl sm:text-2xl font-semibold text-surface-800 dark:text-white mb-6">
         Latest Videos
       </h2>
@@ -106,6 +106,6 @@ export default function Videos() {
           <ContentCard key={index} {...video} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

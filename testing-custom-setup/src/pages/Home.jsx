@@ -174,7 +174,7 @@ const content = [
 
 export default function Home() {
   return (
-    <>
+    <div className="pt-20 px-4">
       <h2 className="text-xl sm:text-2xl font-semibold text-surface-800 dark:text-white mb-6">
         Recommended for you
       </h2>
@@ -182,7 +182,7 @@ export default function Home() {
         {content.map((item, index) => (
           <ContentCard key={index} {...item} />
         ))}
+        </div>
       </div>
-    </>
   );
 }

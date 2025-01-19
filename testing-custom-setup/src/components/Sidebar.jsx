@@ -32,12 +32,13 @@ export default function Sidebar({ isOpen }) {
                 flex items-center px-4 py-3 text-surface-600 dark:text-surface-300 
                 hover:bg-surface-50 dark:hover:bg-surface-800 
                 hover:text-primary-600 dark:hover:text-primary-400 
-                transition-colors
+                transition-colors relative group
                 ${isActive ? 'bg-surface-50 dark:bg-surface-800 text-primary-600 dark:text-primary-400' : ''}
               `}
             >
-              <item.icon className="w-6 h-6 shrink-0" />
+              <item.icon className={`w-6 h-6 shrink-0 ${isOpen ? '' : 'mx-auto'}`} />
               {isOpen && <span className="ml-4 truncate">{item.label}</span>}
+              <div className={`absolute left-0 top-0 bottom-0 w-1 bg-primary-500 rounded-r-full transition-opacity duration-300 ${({ isActive }) => isActive ? 'opacity-100' : 'opacity-0'}`} />
             </NavLink>
           ))}
         </nav>

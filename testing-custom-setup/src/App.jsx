@@ -5,6 +5,7 @@ import { getCurrentUser } from './services/authService';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useUserContext } from './context/UserContext';
 import Loading from './components/Loading';
+import Settings from './pages/Settings';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -35,13 +36,13 @@ function App() {
           <Sidebar isOpen={isSidebarOpen} />
           <Header onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
           
-          <main className={`pt-24 pb-8 transition-all duration-300 px-4 sm:px-6 lg:px-8
+            <main className={`transition-all duration-300
             ${isSidebarOpen ? 'sm:ml-64' : 'sm:ml-20'}`}
-          >
+            >
             <div className="max-w-7xl mx-auto">
               <Outlet/>
             </div>
-          </main>
+            </main>
         </div>
   );
 }

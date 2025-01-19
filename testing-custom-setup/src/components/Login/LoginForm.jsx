@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { loginUser } from "../../services/authService"; 
 import { useUserContext } from "../../context/UserContext";
+import { toast } from 'react-toastify';
 
 export function LoginForm() {
   const [username, setUsername] = useState("");
@@ -18,13 +19,23 @@ export function LoginForm() {
     setError(null);
   
     const response = await loginUser(username, password, addUserData);
-  
+    
     if (response?.username) {
+      toast.success('🎉 Welcome back!', {
+      className: 'dark-toast',
+      bodyClassName: 'dark-toast-body',
+      progressClassName: 'dark-toast-progress'
+      });
       navigate("/");
     } else {
+      toast.error('🔐 Invalid credentials', {
+      className: 'dark-toast',
+      bodyClassName: 'dark-toast-body',
+      progressClassName: 'dark-toast-progress'
+      });
       setError("Invalid login credentials. Please try again.");
     }
-  
+    
     setIsSubmitting(false);
   };
   
